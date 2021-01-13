@@ -22,12 +22,14 @@ export const publishReview = async (articleId, review) => {
 	}
 };
 
-export const getArticles = async () => {
+export const getReviewsForArticle = async (articleId) => {
 	try {
-		const response = await axios.get(`${REACT_APP_BE_DEV_URL}/articles`);
+		const response = await axios.get(
+			`${REACT_APP_BE_DEV_URL}/articles/${articleId}/reviews`
+		);
 		return response.data;
 	} catch (error) {
-		console.log("Article GET error", error);
+		console.log("Review GET error", error);
 		return error.response.data;
 	}
 };

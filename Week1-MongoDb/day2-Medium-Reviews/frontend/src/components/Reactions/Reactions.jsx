@@ -45,9 +45,10 @@ export default function Reactions(props) {
 				</div>
 			</div>
 
-			<div style={{ marginTop: 50, marginBottom: 200 }}>
+			<div style={{ marginTop: 50, marginBottom: 20 }}>
 				<label>What are your thoughts?</label>
 				<textarea
+					className='mb-2'
 					value={props.textValue}
 					onChange={props.handleReviewChange}
 					style={{ width: "100%", padding: 20 }}

@@ -7,11 +7,28 @@ import { IoLogoTwitter, IoLogoLinkedin, IoLogoFacebook } from "react-icons/io";
 import { IoBookmarkOutline } from "react-icons/io5";
 import Reactions from "../../components/Reactions/Reactions";
 import { getArticleById } from "../../api/article";
-import { publishReview } from "../../api/review";
+import { publishReview, getReviewsForArticle } from "../../api/review";
+import CommentList from "../../components/CommentList/CommentList";
 class Read extends Component {
-	state = {
-		review: { text: "", user: "orhanors" },
-		article: {},
+	constructor(props) {
+		super(props);
+		this.articleId = this.props.match.params.slug;
+		this.state = {
+			review: { text: "", user: "orhanors" },
+			reviewList: [],
+			article: {},
+		};
+	}
+
+	getArticle = async () => {
+		const article = await getArticleById(this.articleId);
+
+		this.setState({ article: article.data });
+	};
+
+	getReviews = async () => {
+		const result = await getReviewsForArticle(this.articleId);
+		this.setState({ reviewList: result.data.reviews });
 	};
 
 	handleReviewChange = (e) => {
@@ -21,25 +38,40 @@ class Read extends Component {
 	};
 
 	handleReviewSubmit = async () => {
-		const articleId = this.props.match.params.slug;
-		const result = await publishReview(articleId, this.state.review);
+		const result = await publishReview(this.articleId, this.state.review);
 		if (result?.success) {
 			const newReview = { ...this.state.review };
 			newReview.text = "";
 			this.setState({ review: newReview });
 		}
-		console.log("revi result", result);
 	};
-	getArticle = async () => {
-		const article = await getArticleById(this.props.match.params.slug);
 
-		this.setState({ article: article.data });
-	};
 	componentDidMount() {
 		this.getArticle();
+		this.getReviews();
 	}
+
+	showReviewList = () => {
+		const { reviewList } = this.state;
+		return (
+			<div>
+				{reviewList.length > 0 &&
+					reviewList.map((review) => {
+						return (
+							<CommentList
+								key={review._id}
+								comment={{
+									user: review.user,
+									text: review.text,
+								}}
+							/>
+						);
+					})}
+			</div>
+		);
+	};
 	render() {
-		const { article } = this.state;
+		const { article, reviewList } = this.state;
 		return (
 			<Container className='article-container'>
 				<h1>{article?.headLine}</h1>
@@ -77,6 +109,10 @@ class Read extends Component {
 					handleReviewSubmit={this.handleReviewSubmit}
 					handleReviewChange={this.handleReviewChange}
 				/>
+
+				{reviewList && reviewList.length > 0 && (
+					<div>{this.showReviewList()}</div>
+				)}
 			</Container>
 		);
 	}
