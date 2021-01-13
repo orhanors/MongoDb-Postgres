@@ -25,7 +25,7 @@ const Stories = () => {
 							key={index}
 							articleImg={"left"}
 							headingFont={"small"}
-							article={article}
+							article={article || {}}
 						/>
 					);
 				})}
