@@ -32,7 +32,7 @@ exports.articleReviewGetByIdController = async (req, res, next) => {
 		);
 
 		if (reviews) {
-			res.status(200).json({ status: true, data: reviews });
+			res.status(200).json({ success: true, data: reviews });
 		} else {
 			res.status(404).json({
 				status: false,

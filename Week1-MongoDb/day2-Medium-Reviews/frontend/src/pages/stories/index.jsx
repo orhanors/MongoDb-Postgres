@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, ListGroup } from "react-bootstrap";
 import { getArticlesByAuthorName } from "../../api/article";
 import ArticleListItem from "../../components/ArticleListItem/ArticleListItem";
+import { Link } from "react-router-dom";
 
 const Stories = () => {
 	const [articles, setArticles] = useState([]);
@@ -21,12 +22,14 @@ const Stories = () => {
 			<div>
 				{articles?.map((article, index) => {
 					return (
-						<ArticleListItem
-							key={index}
-							articleImg={"left"}
-							headingFont={"small"}
-							article={article || {}}
-						/>
+						<Link to={`/read/${article._id}`}>
+							<ArticleListItem
+								key={index}
+								articleImg={"left"}
+								headingFont={"small"}
+								article={article || {}}
+							/>
+						</Link>
 					);
 				})}
 			</div>
