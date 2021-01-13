@@ -14,7 +14,7 @@ const Stories = () => {
 	const getArticles = async () => {
 		const result = await getArticlesByAuthorName();
 		console.log(result);
-		setArticles(result?.data);
+		setArticles(result?.data.reverse());
 	};
 
 	const showArticles = () => {

@@ -19,7 +19,7 @@ export default class NewStory extends Component {
 			author: {
 				name: "orhanors",
 				img:
-					"https://media-exp1.licdn.com/dms/image/C4D03AQH9jhXb5ov5PQ/profile-displayphoto-shrink_200_200/0/1601321229534?e=1616025600&v=beta&t=DI5WYg6x6IZFN0EGMkehA-RPzD-nMg11EzY_aoT4HsU",
+					"https://cactusthemes.com/blog/wp-content/uploads/2018/01/tt_avatar_small.jpg",
 			},
 			cover: "",
 		},
