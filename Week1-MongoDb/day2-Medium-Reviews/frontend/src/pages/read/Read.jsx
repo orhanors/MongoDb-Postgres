@@ -7,13 +7,18 @@ import { IoLogoTwitter, IoLogoLinkedin, IoLogoFacebook } from "react-icons/io";
 import { IoBookmarkOutline } from "react-icons/io5";
 import Reactions from "../../components/Reactions/Reactions";
 import { getArticleById } from "../../api/article";
-import { publishReview, getReviewsForArticle } from "../../api/review";
+import {
+	publishReview,
+	getReviewsForArticle,
+	removeReview,
+} from "../../api/review";
 import CommentList from "../../components/CommentList/CommentList";
 class Read extends Component {
 	constructor(props) {
 		super(props);
 		this.articleId = this.props.match.params.slug;
 		this.state = {
+			reviewSize: 0,
 			review: { text: "", user: "orhanors" },
 			reviewList: [],
 			article: {},
@@ -28,7 +33,18 @@ class Read extends Component {
 
 	getReviews = async () => {
 		const result = await getReviewsForArticle(this.articleId);
-		this.setState({ reviewList: result.data.reviews });
+		this.setState({ reviewList: result.data.reviews.reverse() });
+	};
+	deleteReview = async (e) => {
+		const reviewId = e.target.id;
+		const result = await removeReview(this.articleId, reviewId);
+		if (result?.success) {
+			const reviewList = [...this.state.reviewList];
+			const newReviewList = reviewList.filter(
+				(review) => review._id !== reviewId
+			);
+			this.setState({ reviewList: newReviewList });
+		}
 	};
 
 	handleReviewChange = (e) => {
@@ -42,7 +58,10 @@ class Read extends Component {
 		if (result?.success) {
 			const newReview = { ...this.state.review };
 			newReview.text = "";
-			this.setState({ review: newReview });
+			this.setState({
+				review: newReview,
+				reviewSize: this.state.reviewSize + 1,
+			});
 		}
 	};
 
@@ -51,6 +70,12 @@ class Read extends Component {
 		this.getReviews();
 	}
 
+	componentDidUpdate(prevProps, prevState) {
+		if (this.state.reviewSize !== prevState.reviewSize) {
+			console.log("its running");
+			this.getReviews();
+		}
+	}
 	showReviewList = () => {
 		const { reviewList } = this.state;
 		return (
@@ -59,11 +84,9 @@ class Read extends Component {
 					reviewList.map((review) => {
 						return (
 							<CommentList
+								deleteReview={this.deleteReview}
 								key={review._id}
-								comment={{
-									user: review.user,
-									text: review.text,
-								}}
+								comment={review}
 							/>
 						);
 					})}

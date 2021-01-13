@@ -10,6 +10,8 @@ function CommentItem(props) {
 	return (
 		<div className='comment-container mb-3'>
 			<AreYouSureModal
+				comment={props.comment}
+				deleteReview={props.deleteReview}
 				info={{
 					title: "Delete",
 					body: "Deleted responses are gone forever.Are you sure?",
@@ -29,7 +31,7 @@ function CommentItem(props) {
 						}}
 					/>
 					<div className='d-flex flex-column ml-2'>
-						<h5 className='mb-0'>Orhan Örs</h5>
+						<h5 className='mb-0'>{props.comment.user}</h5>
 						<p>2 days ago</p>
 					</div>
 				</div>
@@ -47,7 +49,7 @@ function CommentItem(props) {
 				</div>
 			</div>
 
-			<div className='content'>fdsfdasfdsaljkfdsalk</div>
+			<div className='content'>{props.comment.text}</div>
 		</div>
 	);
 }

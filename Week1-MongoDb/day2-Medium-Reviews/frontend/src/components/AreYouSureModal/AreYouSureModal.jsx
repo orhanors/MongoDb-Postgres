@@ -21,7 +21,12 @@ function AreYouSureModal(props) {
 				<button className='btn-close' onClick={props.onHide}>
 					Close
 				</button>
-				<button className='btn-delete'>Delete</button>
+				<button
+					id={props.comment._id}
+					onClick={props.deleteReview}
+					className='btn-delete'>
+					Delete
+				</button>
 			</Modal.Footer>
 		</Modal>
 	);

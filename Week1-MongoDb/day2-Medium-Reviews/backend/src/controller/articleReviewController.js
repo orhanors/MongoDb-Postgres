@@ -35,7 +35,7 @@ exports.articleReviewGetByIdController = async (req, res, next) => {
 			res.status(200).json({ success: true, data: reviews });
 		} else {
 			res.status(404).json({
-				status: false,
+				success: false,
 				errors: "Article Not Found",
 			});
 		}
@@ -65,11 +65,11 @@ exports.articleReviewPostController = async (req, res, next) => {
 
 		if (!updatedArticle) {
 			res.status(404).json({
-				status: false,
+				success: false,
 				errors: "Article Not Found!",
 			});
 		}
-		res.status(201).json({ status: true, data: updatedArticle });
+		res.status(201).json({ success: true, data: updatedArticle });
 	} catch (error) {
 		console.log("Article PostReview controller error", error);
 		res.status(500).json({

@@ -4,7 +4,10 @@ import CommentItem from "../CommentItem/CommentItem";
 function CommentList(props) {
 	return (
 		<div>
-			<CommentItem />
+			<CommentItem
+				deleteReview={props.deleteReview}
+				comment={props.comment}
+			/>
 		</div>
 	);
 }

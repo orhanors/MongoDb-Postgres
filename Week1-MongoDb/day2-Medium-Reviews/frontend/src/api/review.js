@@ -77,10 +77,10 @@ export const editArticle = async (article, articleId) => {
 	}
 };
 
-export const deleteArticle = async (articleId) => {
+export const removeReview = async (articleId, reviewId) => {
 	try {
 		const response = await axios.delete(
-			`${REACT_APP_BE_DEV_URL}/articles/${articleId}`
+			`${REACT_APP_BE_DEV_URL}/articles/${articleId}/reviews/${reviewId}`
 		);
 		return response.data;
 	} catch (error) {
