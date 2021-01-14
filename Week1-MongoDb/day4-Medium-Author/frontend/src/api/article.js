@@ -32,14 +32,14 @@ export const getArticles = async () => {
 	}
 };
 
-export const getArticlesByAuthorName = async () => {
+export const getArticlesByAuthorId = async (authorId) => {
 	try {
 		const response = await axios.get(
-			`${REACT_APP_BE_DEV_URL}/articles/?author=orhanors`
+			`${REACT_APP_BE_DEV_URL}/articles/user/${authorId}`
 		);
 		return response.data;
 	} catch (error) {
-		console.log("Article GET error", error);
+		console.log("Article GETById error", error);
 		return error.response.data;
 	}
 };

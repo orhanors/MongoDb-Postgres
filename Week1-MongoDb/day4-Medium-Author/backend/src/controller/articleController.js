@@ -1,5 +1,5 @@
 const db = require("../models");
-
+const mongoose = require("mongoose");
 exports.articlePostController = async (req, res, next) => {
 	try {
 		const newArticle = new db.Article({ ...req.body });
@@ -10,10 +10,27 @@ exports.articlePostController = async (req, res, next) => {
 		next(error);
 	}
 };
+exports.articleGetByAuthorIdController = async (req, res, next) => {
+	try {
+		const { authorId } = req.params;
+		const articles = await db.Article.find({
+			author: mongoose.Types.ObjectId(authorId),
+		}).populate("author");
 
+		if (articles)
+			return res.status(200).json({ success: true, data: articles });
+
+		const err = new Error("Author id not found");
+		err.httpStatusCode = 404;
+		next(err);
+	} catch (error) {
+		console.log("Article GetByAuthorId controller error", error);
+		next(error);
+	}
+};
 exports.articleGetController = async (req, res, next) => {
 	try {
-		const allArticles = await db.Article.find();
+		const allArticles = await db.Article.find().populate("author");
 		if (req.query?.author) {
 			const { author } = req.query;
 			const authorArticles = await db.Article.find({
@@ -34,7 +51,9 @@ exports.articleGetByIdController = async (req, res, next) => {
 	try {
 		const { articleId } = req.params;
 
-		const foundArticle = await db.Article.findById(articleId);
+		const foundArticle = await db.Article.findOne({
+			_id: articleId,
+		}).populate("authors");
 
 		if (foundArticle)
 			return res.status(200).json({ success: true, data: foundArticle });

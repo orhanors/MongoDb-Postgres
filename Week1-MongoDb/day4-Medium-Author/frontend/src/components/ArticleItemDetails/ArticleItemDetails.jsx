@@ -2,6 +2,13 @@ import React from "react";
 import { getLocalStorage } from "../../helpers/localStorage";
 import "./styles.scss";
 class ArticleItemDetails extends React.Component {
+	authorFullName = () => {
+		return (
+			this.props.article.author.name +
+			" " +
+			this.props.article.author.surname
+		);
+	};
 	render() {
 		return (
 			<div className={"pr-3"}>
@@ -14,7 +21,7 @@ class ArticleItemDetails extends React.Component {
 
 					<span className={"author"}>
 						<a href='/'>
-							<b>{getLocalStorage("user").name} </b> in{" "}
+							<b>{this.authorFullName()} </b> in{" "}
 							<b>Better Advice</b>
 						</a>
 					</span>

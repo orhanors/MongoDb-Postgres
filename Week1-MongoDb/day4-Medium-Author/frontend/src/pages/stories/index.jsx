@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Container, ListGroup } from "react-bootstrap";
-import { getArticleById } from "../../api/article";
+import { Container } from "react-bootstrap";
+import { getArticlesByAuthorId } from "../../api/article";
 import ArticleListItem from "../../components/ArticleListItem/ArticleListItem";
 import { Link } from "react-router-dom";
 import { getLocalStorage } from "../../helpers/localStorage";
-import { getAuthorById } from "../../api/author";
 
 const Stories = () => {
 	const [articles, setArticles] = useState([]);
@@ -15,9 +14,9 @@ const Stories = () => {
 
 	const getArticles = async () => {
 		const userId = getLocalStorage("user")._id;
-		const result = await getAuthorById(userId);
+		const result = await getArticlesByAuthorId(userId);
 		console.log("resss", result);
-		setArticles(result?.data.articles.reverse());
+		setArticles(result?.data.reverse());
 	};
 
 	const showArticles = () => {

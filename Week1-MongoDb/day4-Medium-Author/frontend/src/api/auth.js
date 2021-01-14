@@ -16,7 +16,7 @@ export const signup = async (data) => {
 			config
 		);
 		console.log("response data --->", response.data);
-		if (response.status === 200) {
+		if (response.success) {
 			return response.data;
 		} else {
 			return response.data;

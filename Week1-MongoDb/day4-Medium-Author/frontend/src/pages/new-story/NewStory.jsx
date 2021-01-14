@@ -51,7 +51,7 @@ export default class NewStory extends Component {
 		const newArticle = { ...this.state.article };
 		newArticle[currentId] = e.target.value;
 
-		this.setState({ article: newArticle });
+		this.setState({ article: newArticle, errorMsg: "" });
 	};
 	onKeyDown = (e) => {
 		if (e.key === "Enter") {
@@ -62,13 +62,13 @@ export default class NewStory extends Component {
 	handleCategoryChange = (topic) => {
 		const newArticle = { ...this.state.article };
 		newArticle.category = topic;
-		this.setState({ article: newArticle });
+		this.setState({ article: newArticle, errorMsg: "" });
 	};
 
 	handleContentChange = (text) => {
 		const newArticle = { ...this.state.article };
 		newArticle.content = text;
-		this.setState({ article: newArticle });
+		this.setState({ article: newArticle, errorMsg: "" });
 	};
 	render() {
 		const { headLine, content, category, cover } = this.state.article;

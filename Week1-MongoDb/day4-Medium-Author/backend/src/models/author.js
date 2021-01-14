@@ -7,9 +7,9 @@ const AuthorSchema = new mongoose.Schema({
 	username: { type: String },
 	email: { type: String, required: true },
 	password: { type: String, required: true },
-	articles: [{ type: mongoose.Schema.Types.ObjectId, ref: "Article" }],
 	isPremium: false,
 	savedArticles: [{ type: mongoose.Schema.Types.ObjectId, ref: "Article" }],
+	//articles: [{ type: mongoose.Schema.Types.ObjectId, ref: "Article" }],
 	//clapsedArticles: [{ type: mongoose.Schema.Types.ObjectId, ref: "Article" }],
 });
 

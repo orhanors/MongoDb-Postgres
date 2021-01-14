@@ -77,7 +77,7 @@ function Signin(props) {
 					setFormData({
 						...formData,
 						errorMsg:
-							err?.response?.data?.errorMessage ||
+							err?.response?.data?.errors ||
 							"Something went wrong",
 					});
 				});

@@ -10,16 +10,16 @@ exports.signupController = async (req, res) => {
 		if (foundUser) {
 			return res
 				.status(400)
-				.json({ errorMessage: "Email already exist!" });
+				.json({ success: false, errors: "Email already exist!" });
 		}
 		//We re hashing password using mongoose hooks
 		const newUser = new db.Author({ ...req.body });
 
 		await newUser.save();
-		res.status(201).json({ successMessage: "Successfuly created" });
+		res.status(201).json({ success: true, data: "Successfuly created" });
 	} catch (error) {
 		console.log(error);
-		res.status(500).json({ errorMessage: "Internal Server Error" });
+		next(error);
 	}
 };
 
@@ -33,7 +33,7 @@ exports.signinController = async (req, res) => {
 		if (!user) {
 			return res
 				.status(400)
-				.json({ errorMessage: "Invalid credentials" });
+				.json({ success: false, errors: "Invalid credentials" });
 		}
 		console.log("Name of the user", user.fullName);
 		//Compare plain password and hashed password
@@ -41,7 +41,7 @@ exports.signinController = async (req, res) => {
 		if (!isPasswordMatched) {
 			return res
 				.status(400)
-				.json({ errorMessage: "Invalid credentials" });
+				.json({ success: false, errors: "Invalid credentials" });
 		}
 
 		//Create jwt payload
@@ -67,6 +67,6 @@ exports.signinController = async (req, res) => {
 		);
 	} catch (error) {
 		console.log("SigninController error: ", error);
-		res.send(500).json({ errorMessage: "Internal Server Error" });
+		next(error);
 	}
 };

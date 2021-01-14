@@ -7,16 +7,13 @@ const ArticleSchema = new mongoose.Schema(
 		content: { type: String, required: true },
 		category: { name: { type: String }, img: { type: String } },
 		//author: { name: { type: String }, img: { type: String } },
-		author: { type: mongoose.Schema.Types.ObjectId, ref: "author" },
+		author: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Author",
+			required: [true, "Author field is required"],
+		},
 		cover: { type: String },
 		reviews: [{ text: { type: String }, user: { type: String } }],
-		claps: [
-			{
-				type: mongoose.Schema.Types.ObjectId,
-				ref: "author",
-				unique: true,
-			},
-		],
 	},
 	{ timestamps: true }
 );

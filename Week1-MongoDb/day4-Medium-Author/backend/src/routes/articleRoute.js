@@ -4,6 +4,7 @@ const {
 	articleGetByIdController,
 	articleDeleteController,
 	articlePutController,
+	articleGetByAuthorIdController,
 } = require("../controller/articleController");
 
 const {
@@ -44,7 +45,8 @@ articleRouter.get(
 	"/:articleId/reviews/:reviewId",
 	articleReviewGetByIdController
 );
-
+//returns the spesific author's articles
+articleRouter.get("/user/:authorId", articleGetByAuthorIdController);
 //adds a new review for the specified article
 articleRouter.post(
 	"/:articleId",

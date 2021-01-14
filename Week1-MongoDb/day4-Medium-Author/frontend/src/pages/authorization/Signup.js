@@ -55,29 +55,29 @@ function Signup(props) {
 			setFormData({
 				...formData,
 				errorMsg: "All fields are required",
-				successMessage: "",
+				successMsg: "",
 			});
 		} else if (!isEmail(email)) {
 			setFormData({
 				...formData,
 				errorMsg: "Invalid Email!",
-				successMessage: "",
+				successMsg: "",
 			});
 		} else if (!equals(password, password2)) {
 			setFormData({
 				...formData,
 				errorMsg: "Passwords are not same",
-				successMessage: "",
+				successMsg: "",
 			});
 		} else {
 			let { name, surname, username, email, password } = formData;
 			let body = { name, surname, username, email, password };
 
 			const response = await signup(body);
-			if (response.errorMessage) {
+			if (response.errors) {
 				setFormData({
 					...formData,
-					errorMsg: response.errorMessage,
+					errorMsg: response.errors,
 					successMsg: "",
 				});
 			} else {
@@ -89,7 +89,7 @@ function Signup(props) {
 					password: "",
 					password2: "",
 					errorMsg: "",
-					successMsg: response.successMessage,
+					successMsg: response.data,
 				});
 			}
 		}
