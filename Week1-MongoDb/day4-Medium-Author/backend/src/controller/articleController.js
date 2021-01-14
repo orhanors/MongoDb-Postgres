@@ -7,10 +7,7 @@ exports.articlePostController = async (req, res, next) => {
 		res.status(201).json({ success: true, data: newArticle });
 	} catch (error) {
 		console.log("Article POST controller error", error);
-		res.status(500).json({
-			success: false,
-			errors: "Internal Server Error",
-		});
+		next(error);
 	}
 };
 
@@ -29,10 +26,7 @@ exports.articleGetController = async (req, res, next) => {
 		res.status(200).json({ success: true, data: allArticles });
 	} catch (error) {
 		console.log("Article GET controller error", error);
-		res.status(500).json({
-			success: false,
-			errors: "Internal Server Error",
-		});
+		next(error);
 	}
 };
 
@@ -44,13 +38,12 @@ exports.articleGetByIdController = async (req, res, next) => {
 
 		if (foundArticle)
 			return res.status(200).json({ success: true, data: foundArticle });
-		res.status(404).json({ status: false, errors: "Article not found" });
+		const err = new Error("Article Not Found");
+		err.httpStatusCode = 404;
+		next(err);
 	} catch (error) {
 		console.log("Article GETById controller error", error);
-		res.status(500).json({
-			success: false,
-			errors: "Internal Server Error",
-		});
+		next(error);
 	}
 };
 
@@ -69,16 +62,12 @@ exports.articlePutController = async (req, res, next) => {
 				.status(201)
 				.json({ success: true, data: modifiedArticle });
 
-		res.status(404).json({
-			success: false,
-			errors: "Article not found",
-		});
+		const err = new Error("Article Not Found");
+		err.httpStatusCode = 404;
+		next(err);
 	} catch (error) {
 		console.log("Article PUT controller error", error);
-		res.status(500).json({
-			success: false,
-			errors: "Internal Server Error",
-		});
+		next(error);
 	}
 };
 
@@ -90,15 +79,11 @@ exports.articleDeleteController = async (req, res, next) => {
 		if (deletedUser)
 			return res.status(201).json({ success: true, data: "OK" });
 
-		res.status(404).json({
-			success: false,
-			errors: "Article not found",
-		});
+		const err = new Error("Article Not Found");
+		err.httpStatusCode = 404;
+		next(err);
 	} catch (error) {
 		console.log("Article DELETE controller error", error);
-		res.status(500).json({
-			success: false,
-			errors: "Internal Server Error",
-		});
+		next(error);
 	}
 };

@@ -12,10 +12,7 @@ exports.articleReviewGetController = async (req, res, next) => {
 		res.status(200).json({ success: true, data: allReviewsForArticle });
 	} catch (error) {
 		console.log("Article GetReview controller error", error);
-		res.status(500).json({
-			success: false,
-			errors: "Internal Server Error",
-		});
+		next(error);
 	}
 };
 
@@ -40,10 +37,7 @@ exports.articleReviewGetByIdController = async (req, res, next) => {
 		}
 	} catch (error) {
 		console.log("Article GetReviewById controller error", error);
-		res.status(500).json({
-			success: false,
-			errors: "Internal Server Error",
-		});
+		next(error);
 	}
 };
 
@@ -71,10 +65,7 @@ exports.articleReviewPostController = async (req, res, next) => {
 		res.status(201).json({ success: true, data: updatedArticle });
 	} catch (error) {
 		console.log("Article PostReview controller error", error);
-		res.status(500).json({
-			success: false,
-			errors: "Internal Server Error",
-		});
+		next(error);
 	}
 };
 
@@ -115,10 +106,7 @@ exports.articleReviewPutController = async (req, res, next) => {
 		}
 	} catch (error) {
 		console.log("Article GetReview controller error", error);
-		res.status(500).json({
-			success: false,
-			errors: "Internal Server Error",
-		});
+		next(error);
 	}
 };
 
@@ -145,10 +133,7 @@ exports.articleReviewDeleteController = async (req, res, next) => {
 		res.json({ success: true, data: "OK" });
 	} catch (error) {
 		console.log("Article GetReview controller error", error);
-		res.status(500).json({
-			success: false,
-			errors: "Internal Server Error",
-		});
+		next(error);
 	}
 };
 
@@ -171,9 +156,6 @@ exports.articleClapsController = async (req, res, next) => {
 		res.status(201).json({ success: true, data: updatedArticle });
 	} catch (error) {
 		console.log("Article GetReview controller error", error);
-		res.status(500).json({
-			success: false,
-			errors: "Internal Server Error",
-		});
+		next(error);
 	}
 };

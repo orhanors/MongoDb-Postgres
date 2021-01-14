@@ -5,6 +5,10 @@ const authorRouter = require("./src/routes/authorRoute");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const authRouter = require("./src/routes/authRoute");
+const {
+	notFoundHandler,
+	genericErrorHandler,
+} = require("./src/helpers/errorHandling");
 
 const server = express();
 dotenv.config();
@@ -28,6 +32,12 @@ server.use(express.json());
 server.use("/articles", articleRouter);
 server.use("/authors", authorRouter);
 server.use("/auth", authRouter);
+
+//ERRO HANDLING MIDDLEWARES
+server.use(notFoundHandler);
+server.use(genericErrorHandler);
+
+//---------------------------------
 server.listen(port, () => {
 	if (server.get("env") === "production") {
 		console.log("Server is running on CLOUD on port:", port);

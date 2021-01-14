@@ -25,6 +25,6 @@ ArticleSchema.virtual("clapSize").get(function () {
 	return this.claps.length;
 });
 
-const Article = mongoose.model("Article", ArticleSchema, "Articles");
+const Article = mongoose.model("Article", ArticleSchema);
 
 module.exports = Article;
