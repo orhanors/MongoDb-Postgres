@@ -12,7 +12,8 @@ const {
 	articleReviewPostController,
 	articleReviewPutController,
 	articleReviewDeleteController,
-} = require("../controller/articleReviewController");
+	articleClapsController,
+} = require("../controller/articleReactionsController");
 const {
 	articleBodyValidator,
 	validatorResult,
@@ -66,4 +67,6 @@ articleRouter.delete(
 	articleReviewDeleteController
 );
 
+// CLAPS
+articleRouter.post("/:articleId/claps/:authorId", articleClapsController);
 module.exports = articleRouter;

@@ -13,6 +13,8 @@ import {
 	removeReview,
 } from "../../api/review";
 import CommentList from "../../components/CommentList/CommentList";
+import { postClaps } from "../../api/claps";
+import { getLocalStorage } from "../../helpers/localStorage";
 class Read extends Component {
 	//CLASS SET UP
 	constructor(props) {
@@ -49,7 +51,10 @@ class Read extends Component {
 	// HANDLE REVIEW PROCESSES
 	getReviews = async () => {
 		const result = await getReviewsForArticle(this.articleId);
-		this.setState({ reviewList: result.data.reviews.reverse() });
+		this.setState({
+			reviewList: result.data.reviews.reverse(),
+			clapSize: result?.data?.claps?.length || 0,
+		});
 	};
 	deleteReview = async (e) => {
 		const reviewId = e.target.id;
@@ -82,7 +87,12 @@ class Read extends Component {
 	};
 
 	// HADLE REACTIONS
-	handleClap = (e) => {};
+	handleClap = async (e) => {
+		const userId = getLocalStorage("user")._id;
+		const result = await postClaps(this.articleId, userId);
+		console.log("clap result", result);
+		this.setState({ clapSize: this.state.clapSize + 1 });
+	};
 
 	// VIEWS
 	showReviewList = () => {
@@ -138,7 +148,13 @@ class Read extends Component {
 
 				<Reactions
 					handleClap={this.handleClap}
-					textValue={this.state.review.text}
+					info={{
+						textValue: this.state.review.text,
+
+						reviewSize: this.state.reviewList.length,
+						articleId: this.articleId,
+						claps: this.state.article?.claps,
+					}}
 					handleReviewSubmit={this.handleReviewSubmit}
 					handleReviewChange={this.handleReviewChange}
 				/>

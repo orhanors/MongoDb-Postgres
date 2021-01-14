@@ -4,6 +4,7 @@ const articleRouter = require("./src/routes/articleRoute");
 const authorRouter = require("./src/routes/authorRoute");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const authRouter = require("./src/routes/authRoute");
 
 const server = express();
 dotenv.config();
@@ -26,7 +27,7 @@ server.use(express.json());
 //ROUTES
 server.use("/articles", articleRouter);
 server.use("/authors", authorRouter);
-
+server.use("/auth", authRouter);
 server.listen(port, () => {
 	if (server.get("env") === "production") {
 		console.log("Server is running on CLOUD on port:", port);

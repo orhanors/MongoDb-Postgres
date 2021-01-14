@@ -151,3 +151,29 @@ exports.articleReviewDeleteController = async (req, res, next) => {
 		});
 	}
 };
+
+exports.articleClapsController = async (req, res, next) => {
+	try {
+		const { articleId, authorId } = req.params;
+
+		const updatedArticle = await db.Article.findByIdAndUpdate(
+			articleId,
+			{ $push: { claps: authorId } },
+			{ runValidators: true, new: true }
+		);
+
+		if (!updatedArticle) {
+			res.status(404).json({
+				success: false,
+				errors: "Article Not Found!",
+			});
+		}
+		res.status(201).json({ success: true, data: updatedArticle });
+	} catch (error) {
+		console.log("Article GetReview controller error", error);
+		res.status(500).json({
+			success: false,
+			errors: "Internal Server Error",
+		});
+	}
+};

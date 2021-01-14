@@ -6,10 +6,17 @@ const ArticleSchema = new mongoose.Schema(
 		subHead: { type: String },
 		content: { type: String, required: true },
 		category: { name: { type: String }, img: { type: String } },
-		author: { name: { type: String }, img: { type: String } },
+		//author: { name: { type: String }, img: { type: String } },
+		author: { type: mongoose.Schema.Types.ObjectId, ref: "author" },
 		cover: { type: String },
 		reviews: [{ text: { type: String }, user: { type: String } }],
-		claps: [{ type: mongoose.Schema.Types.ObjectId, ref: "author" }],
+		claps: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "author",
+				unique: true,
+			},
+		],
 	},
 	{ timestamps: true }
 );

@@ -9,6 +9,8 @@ import Read from "./pages/read/Read";
 import Search from "./pages/search/Search";
 import Stats from "./pages/stats";
 import Stories from "./pages/stories";
+import SignUp from "./pages/authorization/Signup";
+import SignIn from "./pages/authorization/Signin";
 
 const routes = [
 	{ path: "/", component: Home },
@@ -17,6 +19,8 @@ const routes = [
 	{ path: "/read/:slug", component: Read },
 	{ path: "/search", component: Search },
 	{ path: "/stats", component: Stats },
+	{ path: "/auth/login", component: SignIn },
+	{ path: "/auth/signup", component: SignUp },
 	{ path: "/stories", component: Stories },
 ];
 

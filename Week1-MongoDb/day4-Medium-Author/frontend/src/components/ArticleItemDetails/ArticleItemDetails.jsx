@@ -1,4 +1,5 @@
 import React from "react";
+import { getLocalStorage } from "../../helpers/localStorage";
 import "./styles.scss";
 class ArticleItemDetails extends React.Component {
 	render() {
@@ -13,7 +14,7 @@ class ArticleItemDetails extends React.Component {
 
 					<span className={"author"}>
 						<a href='/'>
-							<b>{this.props.article.author.name} </b> in{" "}
+							<b>{getLocalStorage("user").name} </b> in{" "}
 							<b>Better Advice</b>
 						</a>
 					</span>
