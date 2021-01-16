@@ -1,3 +1,4 @@
+const ApiError = require("../classes/ApiError");
 const db = require("../models");
 
 exports.authorGetController = async (req, res, next) => {
@@ -22,12 +23,10 @@ exports.authorGetByIdController = async (req, res, next) => {
 
 		if (author)
 			return res.status(200).json({ success: true, data: author });
-
-		const err = new Error("Author Not Found!");
-		err.httpStatusCode = 404;
-		next(err);
+		throw new ApiError(404, "Author Not Found");
 	} catch (error) {
 		console.log("Author GETById controller error", error);
+		if (error.name === "CastError") return next(new ApiError(404));
 		next(error);
 	}
 };
@@ -57,21 +56,16 @@ exports.authorPutController = async (req, res, next) => {
 		);
 
 		if (!editedAuthor) {
-			const err = new Error("Author Not Found");
-			err.httpStatusCode = 404;
-			next(err);
+			throw new ApiError(404, "Author Not Found");
 		}
 		res.status(200).json({ success: true, data: editedAuthor });
 	} catch (error) {
 		console.log("Author PUT controller error", error.name);
-		const err = new Error();
-		if (error.name == "CastError") {
-			err.message = "Author Not Found";
-			err.httpStatusCode = 404;
-			next(err);
-		} else {
-			next(err);
-		}
+
+		if (error.name == "CastError")
+			return next(new ApiError(404, "Author Not Found"));
+
+		next(error);
 	}
 };
 
@@ -82,9 +76,11 @@ exports.authorDeleteController = async (req, res, next) => {
 
 		if (author) return res.status(200).json({ success: true, data: "OK" });
 
-		res.status(404).json({ success: false, errors: "Not Found" });
+		throw new Error(404, "Author Not Found");
 	} catch (error) {
 		console.log("Author DELETE controller error", error);
+		if ((error.name = "CastError"))
+			return next(new ApiError(404, "Author Not Found"));
 		next(error);
 	}
 };

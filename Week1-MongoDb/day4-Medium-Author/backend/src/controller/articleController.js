@@ -1,5 +1,6 @@
 const db = require("../models");
 const mongoose = require("mongoose");
+const ApiError = require("../classes/ApiError");
 exports.articlePostController = async (req, res, next) => {
 	try {
 		const newArticle = new db.Article({ ...req.body });
@@ -18,11 +19,9 @@ exports.articleGetByAuthorIdController = async (req, res, next) => {
 		}).populate("author");
 
 		if (articles)
-			return res.status(200).json({ success: true, data: articles });
+			return res.status(OK).json({ success: true, data: articles });
 
-		const err = new Error("Author id not found");
-		err.httpStatusCode = 404;
-		next(err);
+		throw new ApiError(404, "Author ID Not Found");
 	} catch (error) {
 		console.log("Article GetByAuthorId controller error", error);
 		next(error);
@@ -31,15 +30,7 @@ exports.articleGetByAuthorIdController = async (req, res, next) => {
 exports.articleGetController = async (req, res, next) => {
 	try {
 		const allArticles = await db.Article.find().populate("author");
-		if (req.query?.author) {
-			const { author } = req.query;
-			const authorArticles = await db.Article.find({
-				"author.name": "orhanors",
-			});
-			return res
-				.status(200)
-				.json({ success: true, data: authorArticles });
-		}
+
 		res.status(200).json({ success: true, data: allArticles });
 	} catch (error) {
 		console.log("Article GET controller error", error);
@@ -57,11 +48,11 @@ exports.articleGetByIdController = async (req, res, next) => {
 
 		if (foundArticle)
 			return res.status(200).json({ success: true, data: foundArticle });
-		const err = new Error("Article Not Found");
-		err.httpStatusCode = 404;
-		next(err);
+		throw new ApiError(404, "Article Not Found!");
 	} catch (error) {
 		console.log("Article GETById controller error", error);
+		if ((error.name = "CastError"))
+			return next(new ApiError(404, "Article Not Found"));
 		next(error);
 	}
 };
@@ -81,9 +72,7 @@ exports.articlePutController = async (req, res, next) => {
 				.status(201)
 				.json({ success: true, data: modifiedArticle });
 
-		const err = new Error("Article Not Found");
-		err.httpStatusCode = 404;
-		next(err);
+		throw new ApiError(404, "Article Not Found");
 	} catch (error) {
 		console.log("Article PUT controller error", error);
 		next(error);
@@ -98,11 +87,11 @@ exports.articleDeleteController = async (req, res, next) => {
 		if (deletedUser)
 			return res.status(201).json({ success: true, data: "OK" });
 
-		const err = new Error("Article Not Found");
-		err.httpStatusCode = 404;
-		next(err);
+		throw new ApiError(404, "Article Not Found");
 	} catch (error) {
 		console.log("Article DELETE controller error", error);
+		if ((error.name = "CastError"))
+			return next(new ApiError(404, "Article Not Found"));
 		next(error);
 	}
 };

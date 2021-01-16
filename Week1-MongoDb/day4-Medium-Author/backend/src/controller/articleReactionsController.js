@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const ApiError = require("../classes/ApiError");
 const db = require("../models");
 
 exports.articleReviewGetController = async (req, res, next) => {
@@ -27,14 +28,10 @@ exports.articleReviewGetByIdController = async (req, res, next) => {
 			{ _id: 0, reviews: { $elemMatch: { _id: reviewId } } }
 		);
 
-		if (reviews) {
-			res.status(200).json({ success: true, data: reviews });
-		} else {
-			res.status(404).json({
-				success: false,
-				errors: "Article Not Found",
-			});
-		}
+		if (reviews)
+			return res.status(200).json({ success: true, data: reviews });
+
+		throw new ApiError(404, "Article Not Found");
 	} catch (error) {
 		console.log("Article GetReviewById controller error", error);
 		next(error);
@@ -57,10 +54,7 @@ exports.articleReviewPostController = async (req, res, next) => {
 		);
 
 		if (!updatedArticle) {
-			res.status(404).json({
-				success: false,
-				errors: "Article Not Found!",
-			});
+			throw new ApiError(404, "Article Not Found");
 		}
 		res.status(201).json({ success: true, data: updatedArticle });
 	} catch (error) {
@@ -99,13 +93,11 @@ exports.articleReviewPutController = async (req, res, next) => {
 			);
 			res.status(201).json({ success: true, data: editedReview });
 		} else {
-			res.status(404).json({
-				success: false,
-				errors: "Not found",
-			});
+			throw new ApiError(404);
 		}
 	} catch (error) {
 		console.log("Article GetReview controller error", error);
+		if ((error.name = "CastError")) return next(new ApiError(404));
 		next(error);
 	}
 };
@@ -124,10 +116,7 @@ exports.articleReviewDeleteController = async (req, res, next) => {
 			{ new: true }
 		);
 
-		if (!modifiedReviews)
-			return res
-				.status(404)
-				.json({ success: false, errors: "Not found" });
+		if (!modifiedReviews) throw new ApiError(404);
 
 		await db.Review.findByIdAndDelete(reviewId);
 		res.json({ success: true, data: "OK" });
@@ -148,10 +137,7 @@ exports.articleClapsController = async (req, res, next) => {
 		);
 
 		if (!updatedArticle) {
-			res.status(404).json({
-				success: false,
-				errors: "Article Not Found!",
-			});
+			throw new ApiError(404, "Article Not Found");
 		}
 		res.status(201).json({ success: true, data: updatedArticle });
 	} catch (error) {

@@ -20,7 +20,6 @@ const protectedRoutes = [
 	{ path: "/read/:slug", component: Read },
 	{ path: "/search", component: Search },
 	{ path: "/stats", component: Stats },
-	{ path: "/auth/signup", component: SignUp },
 	{ path: "/stories", component: Stories },
 ];
 
@@ -37,6 +36,7 @@ function App() {
 			})}
 
 			<Route path='/auth/login' exact component={SignIn} />
+			<Route path='/auth/signup' exact component={SignUp} />
 		</Router>
 	);
 }
