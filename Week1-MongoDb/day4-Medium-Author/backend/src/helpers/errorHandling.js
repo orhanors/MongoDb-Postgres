@@ -30,7 +30,7 @@ exports.notFoundHandler = (err, req, res, next) => {
 
 exports.unauthorizedError = (err, req, res, next) => {
 	if (err.httpStatusCode === 401) {
-		res.status(404).json({
+		res.status(401).json({
 			success: false,
 			errors: err.message || "Unauthorized",
 		});
